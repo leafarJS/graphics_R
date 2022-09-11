@@ -17,9 +17,10 @@ library(plyr)
 #la variable se convierte en un factor y, por lo tanto, se trata como 
 #una variable discreta.
 
-
+########################################
 #4.1. Making a Basic Line Graph
 #4.1. Hacer un gráfico lineal básico
+########################################
 
 view(BOD)
 str(BOD)
@@ -61,9 +62,10 @@ BOD %>%
   geom_line()+
   expand_limits(y = 0)
 
-
+##########################################
 #4.2. Adding Points to a Line Graph
 #4.2. Añadir puntos a un grafico lineal
+##########################################
 
 BOD %>% 
   ggplot(aes(
@@ -95,8 +97,10 @@ worldpop %>%
   geom_point()+
   scale_y_log10()
 
+################################################
 #4.3. Making a Line Graph with Multiple Lines
 #4.3. Hacer un grafico lineal con varias lineas
+################################################
 
 view(ToothGrowth)
 str(ToothGrowth)
@@ -166,8 +170,10 @@ x %>%
   geom_line(position = position_dodge(0.2))+
   geom_point(position = position_dodge(0.2), size = 3)
 
+##########################################
 #4.4. Changing the Appearance of Lines
 #4.4. Cambiar la apariencia de las lineas
+##########################################
 
 BOD %>% 
   ggplot(aes(
@@ -207,9 +213,10 @@ x %>%
              size = 3, 
              fill = "white")
 
-
+##########################################
 #4.5. Changing the Appearance of Points
 #4.5. Cambiar la aparienica de los puntos
+##########################################
 
 BOD %>% 
   ggplot(aes(
@@ -244,8 +251,10 @@ x %>%
              position = position_dodge(0.2))+
   scale_fill_manual(values = c("#8c96c6", "#810f7c"))
 
+##############################################
 #4.6. Making a Graph with a Shaded Area
-#4.6. Hacer un grafico con un area sombreada
+#4.6. Hacer un gráfico con un área sombreada
+##############################################
 
 x = data.frame(
   year = as.numeric(time(sunspot.year)),
@@ -277,4 +286,143 @@ x %>%
   ))+
   geom_area(fill = "blue", 
             alpha = 0.2)+
+  geom_line()
+
+#########################################
+#4.7. Making a Stacked Area Graph
+#4.7. Hacer un grafico de areas apiladas
+#########################################
+
+view(uspopage)
+str(uspopage)
+
+uspopage %>% 
+  ggplot(aes(
+    x = Year,
+    y = Thousands, 
+    fill = AgeGroup
+  ))+
+  geom_area()
+
+uspopage %>% 
+  ggplot(aes(
+    x = Year,
+    y = Thousands,
+    fill = AgeGroup
+  ))+
+  geom_area(colour = "black", 
+            size = 0.2, 
+            alpha = 0.4)+
+  scale_fill_brewer(palette = "Blues", 
+                    breaks = rev(levels(uspopage$AgeGroup)))+
+theme_minimal()
+
+uspopage %>% 
+  ggplot(aes(
+    x = Year,
+    y = Thousands,
+    fill = AgeGroup,
+    order = desc(AgeGroup)
+  ))+
+  geom_area(colour = "black", 
+            size = 0.2, 
+            alpha = 0.4)+
+  scale_fill_brewer(palette = "Blues")
+
+ggplot(data = uspopage, 
+       aes(
+         x = Year, 
+         y = Thousands, 
+         fill = AgeGroup,
+         order = desc(AgeGroup)
+       ))+
+  geom_area(colour = NA, alpha = 0.4)+
+  scale_fill_brewer(palette = "Blues")+
+  geom_line(position = "stack", size = 0.2)
+
+####################################################
+#4.8. Making a Proportional Stacked Area Graph
+#4.8. Hacer un gráfico de área apilada proporcional 
+####################################################
+
+view(uspopage)
+x <- ddply(uspopage,
+           "Year",
+           transform, 
+           percent = Thousands / sum(Thousands) * 100)
+
+str(x)
+view(x)
+
+x %>% 
+  ggplot(aes(
+    x  = Year, 
+    y = percent, 
+    fill = AgeGroup
+  ))+
+  geom_area()
+
+x %>% 
+  ggplot(aes(
+    x  = Year, 
+    y = percent, 
+    fill = AgeGroup
+  ))+
+  geom_area(colour = "black",
+            size = 0.2,
+            alpha = 0.4)
+
+
+x %>% 
+  ggplot(aes(
+    x  = Year, 
+    y = percent, 
+    fill = AgeGroup
+  ))+
+  geom_area(colour = "black",
+            size = 0.2,
+            alpha = 0.4)+
+  scale_fill_brewer(palette = "Greens", 
+                    breaks = rev(levels(uspopage$AgeGroup)))
+
+########################################
+#4.9. Adding a Confidence Region
+#4.9. Adición de una región de confianza
+########################################
+
+view(climate)
+x <- subset(climate, 
+            Source == "Berkeley",
+            select = c("Year", "Anomaly10y", "Unc10y")
+            )
+str(x)
+
+x %>% 
+  ggplot(aes(
+    x = Year,
+    y = Anomaly10y
+  ))+
+  geom_ribbon(aes(
+    ymin = Anomaly10y - Unc10y,
+    ymax = Anomaly10y + Unc10y
+  ),
+  alpha = 0.2)+
+  geom_line()
+
+
+x %>% 
+  ggplot(aes(
+    x = Year,
+    y = Anomaly10y
+  ))+
+  geom_line(aes(
+    y = Anomaly10y-Unc10y
+  ), colour = "green",
+  linetype = "dotted",
+  size = 1)+
+  geom_line(aes(
+    y = Anomaly10y+Unc10y
+  ), colour = "red",
+  linetype = "dotted",
+  size = 1)+
   geom_line()
