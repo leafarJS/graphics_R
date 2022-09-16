@@ -870,3 +870,6 @@ pairs(x[,2:5], pch=".",
       upper.panel = panel.cor,
       diag.panel = panel.hist,
       lower.panel = panel.lm)
+
+
+#git push -u origin main
