@@ -100,7 +100,8 @@ cabbage_exp %>%
     y = Weight, 
     fill = Cultivar
   ))+
-  geom_bar(position = "dodge", stat = "identity")
+  geom_bar(position = "dodge",
+           stat = "identity")
 
 cabbage_exp %>% 
   ggplot(aes(
@@ -108,7 +109,9 @@ cabbage_exp %>%
     y = Weight, 
     fill = Cultivar #variable discreta forever
   ))+
-  geom_bar(position = "dodge", colour = "black", stat = "identity")+
+  geom_bar(position = "dodge", 
+           colour = "black", 
+           stat = "identity")+
   scale_fill_brewer(palette = "Pastel1")
 
 # CUANDO FALTA UN DATO EN EL MARCO DE DATOS
@@ -120,7 +123,9 @@ x %>%
     y = Weight, 
     fill = Cultivar
   ))+
-  geom_bar(stat = "identity", position = "dodge", colour = "black")+
+  geom_bar(stat = "identity", 
+           position = "dodge", 
+           colour = "black")+
   scale_fill_brewer(palette = "Pastel1")
 
 ###########################################
@@ -134,7 +139,8 @@ diamonds %>%
   ggplot(aes(
     x = cut
   ))+
-  geom_bar(fill ="red", colour = "black")
+  geom_bar(fill ="red", 
+           colour = "black")
 
 diamonds %>% 
   ggplot(aes(
@@ -173,16 +179,21 @@ upc %>%
     y = Change,
     fill = Region
   ))+
-  geom_bar(stat = "identity", colour = "black")+
+  geom_bar(stat = "identity", 
+           colour = "black")+
   scale_fill_manual(values = c("#feb24c", "#bd0026"))+
   xlab("Estados")+
   ylab("% Cambio Poblacional")
 
+#####################################################################
 #3.5. Coloring Negative and Positive Bars Differently
 #3.5. 3.5. Colorear barras negativas y positivas de manera diferente 
+#####################################################################
+
 view(climate)
 str(climate)
 csub <- subset(climate, Source== "Berkeley" & Year >= 1900)
+
 #crear una nueva columna booleana
 csub$pos <- csub$Anomaly10y >= 0
 head(csub, 3)
@@ -216,6 +227,7 @@ csub %>%
 ############################################
 
 str(pg_mean)
+
 #grafico estandar
 pg_mean %>% 
   ggplot(aes(
@@ -223,20 +235,24 @@ pg_mean %>%
     y = weight
   ))+
   geom_bar(stat = "identity")
+
 #barras mas estrechas
 pg_mean %>% 
   ggplot(aes(
     x = group,
     y = weight
   ))+
-  geom_bar(stat = "identity", width = 0.5)
+  geom_bar(stat = "identity",
+           width = 0.5)
+
 #barras maximo de ancho
 pg_mean %>% 
   ggplot(aes(
     x = group,
     y = weight
   ))+
-  geom_bar(stat = "identity", width = 1)
+  geom_bar(stat = "identity", 
+           width = 1)
 
 cabbage_exp %>% 
   ggplot(aes(
@@ -493,6 +509,7 @@ ce %>%
   guides(fill =  guide_legend(reverse =TRUE))+
   scale_fill_brewer(palette = "Pastel4")
 
+
 view(tophitters2001)
 str(tophitters2001)
 
@@ -536,6 +553,7 @@ tophic %>%
 #Obtenga los nombres, ordenados primero por lg, luego por avg
 nameorder <- tophic$name[order(tophic$lg, tophic$avg)]
 view(nameorder)
+
 #Convierta el nombre en un factor, con niveles en el orden de nameorder
 tophic$name <- factor(tophic$name, levels = nameorder)
 view(tophic)
